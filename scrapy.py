@@ -1,10 +1,3 @@
-#COMBO 3 E 4 FUNCIONANDO
-
-#COMBO 2 FUNCIONANDO
-
-#ADICIONAR O SABOR FUNCIONANDO
-
-# %%
 import json
 from typing import Dict
 from selenium import webdriver
@@ -17,8 +10,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import re
-
-
 import time
 from bs4 import BeautifulSoup
 
@@ -56,9 +47,7 @@ class GoomerStore(GoomerUserService):
 
     def id_store(self):
         try:
-            #return self.drive.current_url.split('/')[4]
-            #return '146826' #lamafia
-            return '83200' #jurassicpizza
+            return '83200'
         except:
             print('Erro URL')
             return None
@@ -92,15 +81,12 @@ class GoomerStore(GoomerUserService):
         orders_id = []
 
         try:
-            # orders = self.driver.find_elements_by_class_name("order-id")
             orders = self.driver.find_elements(By.CLASS_NAME, "order-id")
-            
             for order in orders:
                 order.click()
                 time.sleep(0.7)
                 orders_html.append(BeautifulSoup(self.driver.page_source).find('div', {'class': 'ant-modal-body'}))
                 time.sleep(0.7)
-               
                 self.driver.find_elements(By.CLASS_NAME,"ant-modal-close-x")[0].click()
                 time.sleep(0.7)
             return orders_html
@@ -133,11 +119,8 @@ class GoomerStore(GoomerUserService):
         for o in orders:
             tentativa = 1
             if tentativa > 0:
-                for i in range(tentativa):
-            
-                    time.sleep(1)
-                    
-                    
+                for i in range(tentativa):            
+                    time.sleep(1)                
                     nome_cliente = o.find('span', {'class': 'text'}).text
                     telefone = o.find('div', {'data-test': 'order-phone'}).find('span',{'class':'text'}).text
                     pagamento = o.find('div', {'data-test': 'order-payment'}).find('span', {'class': 'text'}).text
@@ -167,12 +150,9 @@ class GoomerStore(GoomerUserService):
                         quantidade = list(o.findAll('div', {'class':'sc-iMrobD sc-cdJjGe exkbGi erUTrs'}))
                         
                         for j,q in zip(pizza_duas,quantidade):
-                                #print(f'Elemento j: {j.text} Elemento q: {q.text}')
-                             
+
                                 if j.text == 'COMBO #1' or j.text == 'COMBO #2' or j.text == 'COMBO #3' or j.text == 'COMBO #4' or j.text == 'TERÇA DA BORDINHA' or j.text == 'QUARTA DUPLA' or j.text == 'QUINTA DO TBT' or j.text == 'Pizza Pequena' or j.text == 'Pizza Grande' or j.text == 'SEXTOU COM JURASSIC':
-                                        #iteracao = int(q.text)
-                                        
-                                        #for _ in range(iteracao):
+ 
                                         if j.text == 'QUINTA DO TBT':
                                             REFRI.append(' ')                                                
                                         nm_pedido = j.text
@@ -198,12 +178,7 @@ class GoomerStore(GoomerUserService):
                                         VALOR_02.append(' ')
                                         MOTOBOY.append(' ')
                                         STATUS.append(' ')
-                                        
-                                        
-                                        #break ou continue?
-                                    
-                                        
-
+        
                                 if 'Guaran' in j.text or 'Coca' in j.text:        
                                         quantidade_refri = int(q.text)
                                         nm_refri = j.text
@@ -215,15 +190,12 @@ class GoomerStore(GoomerUserService):
                                             for i in range(diff):
                                                 while len(REFRI) != len(NOME_CLIENTE):
                                                     REFRI.append(' ')
-                                
-                                                                                                                                                      
-                                
+   
                                 if 'Borda' in j.text:
                                         nm_borda = j.text
                                         quantidade_borda = int(q.text)
                                         for i in range(quantidade_borda):
                                             BORDA.append(nm_borda)
-                                        #break ou continue?
                                                                                 
                                 if j.text[:3] == '1/2' or j.text[1:4] == '1/2':
                                         nm_sabor = j.text
@@ -231,8 +203,7 @@ class GoomerStore(GoomerUserService):
                                         
                                         for i in range(quantidade_sabor):
                                             SABOR.append(nm_sabor)
-                                            #for i in SABOR:
-                                                #print(f'Elemento em SABOR: {i}')
+    
                                         try:
                                             STRING_ADICIONAR = [str(SABOR[i])+' '+str(SABOR[i+1]) for i in range(0,len(SABOR),2)]
                                             #for i in STRING_ADICIONAR:
@@ -244,41 +215,13 @@ class GoomerStore(GoomerUserService):
                                                 for i in range(diff_borda):
                                                     while len(BORDA) != len(STRING_ADICIONAR):
                                                         BORDA.append(' ')
-                                            
-                                            
+
                                         except IndexError:
                                             print('Erro no Index')
                                             print(f'STRING_ADICIONAR: {STRING_ADICIONAR} LEN: {len(STRING_ADICIONAR)}')
                                             print(f'SABOR: {SABOR} LEN: {len(SABOR)}')
                                             
-                                            #print(f'STRING_ADICIONAR: {STRING_ADICIONAR} LEN: {len(STRING_ADICIONAR)}')
-                                        #print(f'SABOR: {SABOR} LEN: {len(SABOR)}')
-                                        #print(f'BORDA: {BORDA} LEN: {len(BORDA)}')
-                                        
-                                        '''
-                                if len(SABOR) > 1:
-                                    try:                                            
-                                        STRING_ADICIONAR = [str(SABOR[i])+' '+str(SABOR[i+1]) for i in range(0,len(SABOR),2)]
-                                    #for i in STRING_ADICIONAR:
-                                    #    print(f'Elemento em STRING_ADICIONAR: {i}')
-                                        if len(STRING_ADICIONAR) > len(NOME_CLIENTE):
-                                            NOME_CLIENTE.append(nome_cliente)
-                                        if len(BORDA) < len(STRING_ADICIONAR):
-                                            diff_borda = len(STRING_ADICIONAR) - len(BORDA)
-                                            for i in range(diff_borda):
-                                                while len(BORDA) != len(STRING_ADICIONAR):
-                                                    BORDA.append(' ') 
 
-                                    except IndexError:
-                                        print('Erro no Index')
-                                        
-                                        #print(f'STRING_ADICIONAR: {STRING_ADICIONAR} LEN: {len(STRING_ADICIONAR)}')
-                                        #print(f'SABOR: {SABOR} LEN: {len(SABOR)}')
-                                        #print(f'BORDA: {BORDA} LEN: {len(BORDA)}')
-                                
-                                '''
-                                      
-                        
                                 if len(BORDA) == len(STRING_ADICIONAR) and len(STRING_ADICIONAR) > len(NOME_CLIENTE):
                                             while len(NOME_CLIENTE) != len(BORDA):
                                                 NOME_CLIENTE.append(NOME_CLIENTE[-1])
@@ -302,15 +245,12 @@ class GoomerStore(GoomerUserService):
                                                 VALOR.append(VALOR[-1])
                                             if len(VALOR)>1:
                                                 if VALOR[-1] == VALOR[-2] and NOME_CLIENTE[-1] == NOME_CLIENTE[-2]:
-                                                    #print(f'Existem {VALOR.count(VALOR[-1])} números {VALOR[-1]}')
                                                     quantidade_repetido = VALOR.count(VALOR[-1])
-                                                    #print(quantidade_repetido)
                                                     for i in range(quantidade_repetido-1):
                                                         VALOR.pop()
                                                     for i in range(quantidade_repetido-1):
                                                         garantidor = ' '
                                                         VALOR.append(i*garantidor)
-                                                #NÃO REPETIR O VALOR PARA SOMAR NO FINAL CORRETAMENTE
                                 
                                 if len(VALOR_02) < len(NOME_CLIENTE):
                                             while len(VALOR_02) != len(NOME_CLIENTE):
@@ -335,9 +275,7 @@ class GoomerStore(GoomerUserService):
                                 if len(BAIRRO) < len(NOME_CLIENTE):
                                             while len(BAIRRO) != len(NOME_CLIENTE):
                                                 BAIRRO.append(BAIRRO[-1])
-                                
-   
-                                  
+           
                         print(f'Comprimento LISTA ID_PEDIDO: {len(ID_PEDIDO)}')
                         print(f'Comprimento LISTA NOME_CLIENTE: {len(NOME_CLIENTE)}')               
                         print(f'Comprimento LISTA TELEFONE: {len(TELEFONE)}')
@@ -345,11 +283,13 @@ class GoomerStore(GoomerUserService):
                         print(f'Comprimento LISTA SABOR: {len(SABOR)}')
                         print(f'Comprimento LISTA STRING_ADICIONAR: {len(STRING_ADICIONAR)}')
                         print(f'Comprimento LISTA BORDA: {len(BORDA)}')
+                        
                         if len(REFRI) == 0:
                             REFRI.append(' ')
                         if len(REFRI) < len(NOME_CLIENTE):
                             while len(REFRI) != len(NOME_CLIENTE):
                                 REFRI.append('')
+                                
                         print(f'Comprimento LISTA REFRI: {len(REFRI)}')
                         print(f'Comprimento LISTA TROCO: {len(TROCO)}')
                         print(f'Comprimento LISTA VALOR: {len(VALOR)}')
@@ -364,15 +304,11 @@ class GoomerStore(GoomerUserService):
                     except AttributeError:
                         print("Pizza não encontrada")
                 
-
         df = dict({'ID_PEDIDO':ID_PEDIDO,'TELEFONE':TELEFONE,'NOME':NOME_CLIENTE,'SABOR':STRING_ADICIONAR,'BORDA':BORDA,'REFRI':REFRI,'TROCO':TROCO,'VALOR':VALOR,'FORMA_PAGAMENTO':FORMA_PAGAMENTO,'VALOR_01':VALOR_02,'FORMA_PAGAMENTO_02':FORMA_PAGAMENTO_02,'MOTOBOY':MOTOBOY,'STATUS':STATUS,'BAIRRO':BAIRRO})
         df = pd.DataFrame(dict([(k, pd.Series(v)) for k, v in df.items()]))    
         df.dropna(subset = ["NOME"], inplace=True)
         df.to_csv('output.csv')
-        #print(df)
 
-        #for g,h,i,j,k,l,m,n,o,p,q,r,s,t in zip(ID_PEDIDO,TELEFONE,NOME_CLIENTE, STRING_ADICIONAR,BORDA,REFRI,TROCO,VALOR,FORMA_PAGAMENTO,VALOR_02,FORMA_PAGAMENTO_02,MOTOBOY,STATUS,BAIRRO):
-        #    pizzas.append([g,h,i,j,k,l,m,n,o,p,q,r,s,t])
         for g,h,i,j,k,l,m,n,o,p,q,r,s,t in zip(ID_PEDIDO,TELEFONE,NOME_CLIENTE, STRING_ADICIONAR,BORDA,REFRI,TROCO,VALOR,FORMA_PAGAMENTO,VALOR_02,FORMA_PAGAMENTO_02,MOTOBOY,STATUS,BAIRRO):
             if all(x in pizzas for x in [g,h,i,j,k,l,m,n,o,p,q,r,s,t]):
                 pass
