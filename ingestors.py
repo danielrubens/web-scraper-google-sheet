@@ -22,11 +22,6 @@ class ingestors:
         self.goomer.go_to_order_accept()
         orders = self.goomer.capture_orders()
         pizzas = self.goomer.extract_pizzas(orders)
-
-        #Adicionar cada pizza dentro da planilha
         for pizza in pizzas:
            self.writer.write_data(pizza)#pizza[0], pizza[1], pizza[2]
         time.sleep(1)
-
-
-
