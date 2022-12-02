@@ -1,7 +1,6 @@
 from typing import List
 import gspread
 
-
 class DataWriter:
     def __init__(self, key:str, credentials:str) -> None:
         self.key = key
