@@ -7,11 +7,9 @@ from scrapy import GoomerStore
 from writer import DataWriter
 from schedule import repeat, every, run_pending
 
-
 if __name__ == "__main__":
 
     store_name = 'STORE_NAME'
-
     key_gspread = 'GOOGLE_GSPREAD_KEY'
     credentials_gspread = 'JSON_GSPREAD'
 
@@ -35,7 +33,6 @@ if __name__ == "__main__":
     @repeat(every(2).seconds)
     def job():
         goomer_ingestor.ingest()
-
 
     while True:
         run_pending()
